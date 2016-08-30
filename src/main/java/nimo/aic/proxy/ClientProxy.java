@@ -23,7 +23,6 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
-        ModBlocks.aiChest.initItemModel();
         server = new AICraftServer();
         server.start();
     }
