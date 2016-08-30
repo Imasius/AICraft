@@ -1,0 +1,26 @@
+﻿
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "nimo.aic.grpc";
+option java_outer_classname = "AICraftProto";
+
+package aicraft;
+
+import "google/protobuf/empty.proto";
+
+service AICraft {
+    rpc SetName(SetNameRequest) returns (google.protobuf.Empty) {}
+}
+
+message SetNameRequest {
+    Position position = 1;
+    string name = 2;
+}
+
+message Position {
+    sint32 x = 1;
+    sint32 y = 2;
+    sint32 z = 3;
+}
+
