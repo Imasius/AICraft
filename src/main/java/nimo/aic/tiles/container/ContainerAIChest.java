@@ -89,6 +89,6 @@ public class ContainerAIChest extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return aiChestTE.canInteractWith(playerIn);
+        return aiChestTE.canPlayerAccess(playerIn);
     }
 }

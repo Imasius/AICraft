@@ -2,6 +2,7 @@ package nimo.aic.tiles.container;
 
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -46,6 +47,12 @@ public class ContainerStorage extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return storageTE.canInteractWith(playerIn);
+        return storageTE.canPlayerAccess(playerIn);
+    }
+
+    @Nullable
+    @Override
+    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+        return null;
     }
 }

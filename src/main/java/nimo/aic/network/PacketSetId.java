@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import nimo.aic.AICraft;
 import nimo.aic.grpc.Id;
 import nimo.aic.tiles.TileEntityId;
 import nimo.aic.tiles.TileEntityStorage;
@@ -46,6 +47,7 @@ public class PacketSetId implements IMessage {
     public static class Handler implements IMessageHandler<PacketSetId, IMessage> {
         @Override
         public IMessage onMessage(PacketSetId message, MessageContext ctx) {
+            AICraft.log.info("Handling PacketSetId: {} at {}", message.id, message.pos);
             FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> handle(message, ctx));
             return null;
         }

@@ -3,35 +3,37 @@ package nimo.aic.tiles;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+import nimo.aic.AICraft;
 import nimo.aic.grpc.Id;
 
 
 /**
  * Base class for all TEs that should be "nameable" using SetId gRPC call
  */
-public abstract class TileEntityId extends TileEntity {
+public abstract class TileEntityId extends TileEntityBase {
 
-    protected Id id;
+    protected Id aiId;
+    private boolean initialized = false;
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        this.id = Id.newBuilder().setGroup(compound.getString("group")).setId(compound.getString("id")).build();
+    protected void readCustomNBT(NBTTagCompound root) {
+        this.aiId = Id.newBuilder().setGroup(root.getString("group")).setId(root.getString("aiid")).build();
+        if (!initialized) {
+            AICraft.proxy.ai.register(aiId, this);
+            initialized = true;
+        }
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        if (id != null) {
-            compound.setString("group", id.getGroup());
-            compound.setString("id", id.getId());
+    protected void writeCustomNBT(NBTTagCompound root) {
+        if (aiId != null) {
+            root.setString("group", aiId.getGroup());
+            root.setString("aiid", aiId.getId());
         }
-        return compound;
     }
 
     public void setId(Id id) {
-        this.id = id;
+        this.aiId = id;
         markDirty();
         IBlockState state = worldObj.getBlockState(getPos());
         worldObj.notifyBlockUpdate(getPos(), state, state, 3);

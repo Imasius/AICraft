@@ -1,14 +1,14 @@
 package nimo.aic.tiles;
 
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityAIChest extends TileEntityId {
+public class TileEntityAIChest extends TileEntityId implements AIStorage {
 
     public static final int SIZE = 27;
 
@@ -20,22 +20,17 @@ public class TileEntityAIChest extends TileEntityId {
     };
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        if (compound.hasKey("items")) {
-            itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
+    protected void readCustomNBT(NBTTagCompound root) {
+        super.readCustomNBT(root);
+        if (root.hasKey("items")) {
+            itemStackHandler.deserializeNBT((NBTTagCompound) root.getTag("items"));
         }
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        compound.setTag("items", itemStackHandler.serializeNBT());
-        return compound;
-    }
-
-    public boolean canInteractWith(EntityPlayer playerIn) {
-        return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
+    protected void writeCustomNBT(NBTTagCompound root) {
+        super.writeCustomNBT(root);
+        root.setTag("items", itemStackHandler.serializeNBT());
     }
 
     @Override
@@ -52,5 +47,10 @@ public class TileEntityAIChest extends TileEntityId {
             return (T) itemStackHandler;
         }
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public IItemHandler getItemHandler() {
+        return itemStackHandler;
     }
 }
