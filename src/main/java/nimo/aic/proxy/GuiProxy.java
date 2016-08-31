@@ -6,8 +6,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import nimo.aic.gui.GuiAIChest;
 import nimo.aic.gui.GuiStorage;
+import nimo.aic.tiles.TileAIChest;
 import nimo.aic.tiles.TileStorage;
+import nimo.aic.tiles.container.ContainerAIChest;
 import nimo.aic.tiles.container.ContainerStorage;
 
 public class GuiProxy implements IGuiHandler {
@@ -18,6 +21,8 @@ public class GuiProxy implements IGuiHandler {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileStorage) {
             return new ContainerStorage(player.inventory, (TileStorage) te);
+        } else if (te instanceof TileAIChest) {
+            return new ContainerAIChest(player.inventory, (TileAIChest) te);
         }
         return null;
     }
@@ -29,6 +34,9 @@ public class GuiProxy implements IGuiHandler {
         if (te instanceof TileStorage) {
             TileStorage storageTE = (TileStorage) te;
             return new GuiStorage(new ContainerStorage(player.inventory, storageTE));
+        } else if (te instanceof TileAIChest) {
+            TileAIChest aiChestTE = (TileAIChest) te;
+            return new GuiAIChest(new ContainerAIChest(player.inventory, aiChestTE));
         }
         return null;
     }

@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "minecraft:blocks/stonebrick"
+    "all": "minecraft:blocks/hardened_clay_stained_red"
   }
 }
