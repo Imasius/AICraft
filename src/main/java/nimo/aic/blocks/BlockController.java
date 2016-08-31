@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nimo.aic.AICraft;
-import nimo.aic.tiles.TileController;
+import nimo.aic.tiles.TileEntityController;
 
 import javax.annotation.Nullable;
 
@@ -33,7 +33,7 @@ public class BlockController extends Block implements ITileEntityProvider {
 
         GameRegistry.register(this);
         GameRegistry.register(new ItemBlock(this), getRegistryName());
-        GameRegistry.registerTileEntity(TileController.class, AICraft.MODID + "_controller");
+        GameRegistry.registerTileEntity(TileEntityController.class, AICraft.MODID + "_controller");
 
         setCreativeTab(AICraft.CREATIVE_TAB);
     }
@@ -46,12 +46,12 @@ public class BlockController extends Block implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileController();
+        return new TileEntityController();
     }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        TileController controllerTE = (TileController) worldIn.getTileEntity(pos);
+        TileEntityController controllerTE = (TileEntityController) worldIn.getTileEntity(pos);
         String world = worldIn.isRemote ? "client" : "server";
         System.out.println("Name on " + world + ": " + controllerTE.getName());
 

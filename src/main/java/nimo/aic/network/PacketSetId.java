@@ -9,8 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import nimo.aic.grpc.Id;
-import nimo.aic.tiles.TileController;
-import nimo.aic.tiles.TileStorage;
+import nimo.aic.tiles.TileEntityStorage;
 
 
 public class PacketSetId implements IMessage {
@@ -53,7 +52,7 @@ public class PacketSetId implements IMessage {
         private void handle(PacketSetId message, MessageContext ctx) {
             World world = ctx.getServerHandler().playerEntity.worldObj;
             // TODO: needs a generic version via interface or base class
-            TileStorage storageTE = (TileStorage) world.getTileEntity(message.pos);
+            TileEntityStorage storageTE = (TileEntityStorage) world.getTileEntity(message.pos);
             storageTE.setId(message.id);
         }
     }

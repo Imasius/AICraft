@@ -4,20 +4,18 @@ package nimo.aic.tiles.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import nimo.aic.AICraft;
-import nimo.aic.tiles.TileStorage;
+import nimo.aic.tiles.TileEntityStorage;
 
 import javax.annotation.Nullable;
 
 public class ContainerStorage extends Container {
 
-    private final TileStorage storageTE;
+    private final TileEntityStorage storageTE;
 
-    public ContainerStorage(IInventory playerInventory, TileStorage storageTE) {
+    public ContainerStorage(IInventory playerInventory, TileEntityStorage storageTE) {
         this.storageTE = storageTE;
 
         addOwnSlots();

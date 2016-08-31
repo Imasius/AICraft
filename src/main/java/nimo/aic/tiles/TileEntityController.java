@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import javax.annotation.Nullable;
 
 
-public class TileController extends TileEntity {
+public class TileEntityController extends TileEntity {
 
     private String name = "";
 

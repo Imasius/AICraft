@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import nimo.aic.tiles.TileController;
+import nimo.aic.tiles.TileEntityController;
 
 
 public class PacketSetName implements IMessage {
@@ -46,7 +46,7 @@ public class PacketSetName implements IMessage {
 
         private void handle(PacketSetName message, MessageContext ctx) {
             World world = ctx.getServerHandler().playerEntity.worldObj;
-            TileController controllerTE = (TileController) world.getTileEntity(message.pos);
+            TileEntityController controllerTE = (TileEntityController) world.getTileEntity(message.pos);
             controllerTE.setName(message.name);
         }
     }

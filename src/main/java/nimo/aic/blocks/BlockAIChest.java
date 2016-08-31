@@ -20,8 +20,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nimo.aic.AICraft;
-import nimo.aic.tiles.TileAIChest;
-import nimo.aic.tiles.TileStorage;
+import nimo.aic.tiles.TileEntityAIChest;
 
 import javax.annotation.Nullable;
 
@@ -36,14 +35,14 @@ public class BlockAIChest extends Block implements ITileEntityProvider {
 
         GameRegistry.register(this);
         GameRegistry.register(new ItemBlock(this), getRegistryName());
-        GameRegistry.registerTileEntity(TileAIChest.class, AICraft.MODID + "_aichest");
+        GameRegistry.registerTileEntity(TileEntityAIChest.class, AICraft.MODID + "_aichest");
 
         setCreativeTab(AICraft.CREATIVE_TAB);
     }
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileAIChest();
+        return new TileEntityAIChest();
     }
 
     @SideOnly(Side.CLIENT)
@@ -55,7 +54,7 @@ public class BlockAIChest extends Block implements ITileEntityProvider {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         TileEntity aiChestTE = worldIn.getTileEntity(pos);
-        if (!(aiChestTE instanceof TileAIChest)) {
+        if (!(aiChestTE instanceof TileEntityAIChest)) {
             return false;
         }
 

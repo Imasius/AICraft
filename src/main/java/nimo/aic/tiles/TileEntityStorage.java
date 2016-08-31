@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.ItemStackHandler;
 import nimo.aic.grpc.Id;
 
-public class TileStorage extends TileEntity {
+public class TileEntityStorage extends TileEntity {
 
     public static final int SIZE = 27;
 
@@ -17,7 +17,7 @@ public class TileStorage extends TileEntity {
     public ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
         @Override
         protected void onContentsChanged(int slot) {
-            TileStorage.this.markDirty();
+            TileEntityStorage.this.markDirty();
         }
     };
 

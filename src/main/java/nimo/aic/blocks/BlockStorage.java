@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nimo.aic.AICraft;
-import nimo.aic.tiles.TileStorage;
+import nimo.aic.tiles.TileEntityStorage;
 
 import javax.annotation.Nullable;
 
@@ -35,14 +35,14 @@ public class BlockStorage extends Block implements ITileEntityProvider {
 
         GameRegistry.register(this);
         GameRegistry.register(new ItemBlock(this), getRegistryName());
-        GameRegistry.registerTileEntity(TileStorage.class, AICraft.MODID + "_storage");
+        GameRegistry.registerTileEntity(TileEntityStorage.class, AICraft.MODID + "_storage");
 
         setCreativeTab(AICraft.CREATIVE_TAB);
     }
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileStorage();
+        return new TileEntityStorage();
     }
 
     @SideOnly(Side.CLIENT)
@@ -54,7 +54,7 @@ public class BlockStorage extends Block implements ITileEntityProvider {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         TileEntity storageTE = worldIn.getTileEntity(pos);
-        if (!(storageTE instanceof TileStorage)) {
+        if (!(storageTE instanceof TileEntityStorage)) {
             return false;
         }
 

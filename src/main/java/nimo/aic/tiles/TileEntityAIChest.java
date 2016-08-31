@@ -11,7 +11,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import nimo.aic.grpc.Id;
 
-public class TileAIChest extends TileEntity {
+public class TileEntityAIChest extends TileEntity {
 
     public static final int SIZE = 27;
 
@@ -20,7 +20,7 @@ public class TileAIChest extends TileEntity {
     public ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
         @Override
         protected void onContentsChanged(int slot) {
-            TileAIChest.this.markDirty();
+            TileEntityAIChest.this.markDirty();
         }
     };
 

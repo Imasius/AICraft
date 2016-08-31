@@ -9,15 +9,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import nimo.aic.tiles.TileAIChest;
+import nimo.aic.tiles.TileEntityAIChest;
 
 import javax.annotation.Nullable;
 
 public class ContainerAIChest extends Container {
 
-    private final TileAIChest aiChestTE;
+    private final TileEntityAIChest aiChestTE;
 
-    public ContainerAIChest(IInventory playerInventory, TileAIChest aiChestTE) {
+    public ContainerAIChest(IInventory playerInventory, TileEntityAIChest aiChestTE) {
         this.aiChestTE = aiChestTE;
 
         addOwnSlots();
@@ -69,11 +69,11 @@ public class ContainerAIChest extends Container {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index < TileAIChest.SIZE) {
-                if (!this.mergeItemStack(itemstack1, TileAIChest.SIZE, this.inventorySlots.size(), true)) {
+            if (index < TileEntityAIChest.SIZE) {
+                if (!this.mergeItemStack(itemstack1, TileEntityAIChest.SIZE, this.inventorySlots.size(), true)) {
                     return null;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, TileAIChest.SIZE, false)) {
+            } else if (!this.mergeItemStack(itemstack1, 0, TileEntityAIChest.SIZE, false)) {
                 return null;
             }
 
