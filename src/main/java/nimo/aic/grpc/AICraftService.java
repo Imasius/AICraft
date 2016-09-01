@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
 import nimo.aic.AICraft;
 import nimo.aic.ModBlocks;
+import nimo.aic.grpc.util.ConversionUtil;
 import nimo.aic.network.PacketHandler;
 import nimo.aic.network.PacketSetId;
 import nimo.aic.network.PacketSetName;
@@ -33,11 +34,11 @@ public class AICraftService extends AICraftGrpc.AICraftImplBase {
             return;
         }
 
-        BlockPos controllerPos = blockPosFrom(request.getPosition());
+        BlockPos controllerPos = ConversionUtil.blockPosFrom(request.getPosition());
         IBlockState blockState = Minecraft.getMinecraft().theWorld.getBlockState(controllerPos);
         Block block = blockState.getBlock();
         if (block == ModBlocks.controller) {
-            PacketHandler.INSTANCE.sendToServer(new PacketSetName(request.getName(), controllerPos));
+            PacketHandler.INSTANCE.sendToServer(new PacketSetName(request));
         } else {
             // TODO: Send "no controller at those coordinates" error
         }
@@ -58,10 +59,10 @@ public class AICraftService extends AICraftGrpc.AICraftImplBase {
             return;
         }
 
-        BlockPos blockPos = blockPosFrom(request.getPosition());
+        BlockPos blockPos = ConversionUtil.blockPosFrom(request.getPosition());
         TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(blockPos);
         if (te instanceof AIStorage) {
-            PacketHandler.INSTANCE.sendToServer(new PacketSetId(request.getId(), blockPos));
+            PacketHandler.INSTANCE.sendToServer(new PacketSetId(request));
         } else {
             // TODO: Send "no controller at those coordinates" error
         }
@@ -119,14 +120,9 @@ public class AICraftService extends AICraftGrpc.AICraftImplBase {
         //    toHandler.insertItem(request.getToSlot(), fromSt, false);
         //});
 
-        PacketHandler.INSTANCE.sendToServer(new PacketTransferItemStack(request.getFromId(), request.getFromSlot(),
-                request.getToId(), request.getToSlot()));
+        PacketHandler.INSTANCE.sendToServer(new PacketTransferItemStack(request));
 
         responseObserver.onNext(Empty.getDefaultInstance());
         responseObserver.onCompleted();
-    }
-
-    private BlockPos blockPosFrom(Position position) {
-        return new BlockPos(position.getX(), position.getY(), position.getZ());
     }
 }
