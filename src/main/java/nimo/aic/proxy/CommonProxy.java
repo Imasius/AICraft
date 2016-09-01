@@ -7,13 +7,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import nimo.aic.AICraft;
 import nimo.aic.ModBlocks;
-import nimo.aic.ai.AI;
 import nimo.aic.compatibility.CompatibilityHandler;
 import nimo.aic.network.PacketHandler;
 
 public class CommonProxy {
-
-    public AI ai = new AI();
 
     public void preInit(FMLPreInitializationEvent event) {
         ModBlocks.init();

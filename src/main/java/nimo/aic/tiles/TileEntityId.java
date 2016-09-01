@@ -2,7 +2,8 @@ package nimo.aic.tiles;
 
 
 import net.minecraft.nbt.NBTTagCompound;
-import nimo.aic.AICraft;
+import net.minecraft.world.World;
+import nimo.aic.ai.AI;
 import nimo.aic.grpc.Id;
 
 
@@ -17,8 +18,17 @@ public abstract class TileEntityId extends TileEntityBase {
     @Override
     protected void readCustomNBT(NBTTagCompound root) {
         this.aiId = Id.newBuilder().setGroup(root.getString("group")).setId(root.getString("aiid")).build();
-        if (!initialized) {
-            AICraft.proxy.ai.register(aiId, this);
+        init(worldObj);
+    }
+
+    @Override
+    public void onLoad() {
+        init(worldObj);
+    }
+
+    private void init(World world) {
+        if (!initialized && worldObj != null && aiId != null) {
+            AI.forWorld(world).register(aiId, this);
             initialized = true;
         }
     }
@@ -32,7 +42,11 @@ public abstract class TileEntityId extends TileEntityBase {
     }
 
     public void setId(Id id) {
+        if (this.aiId != null) {
+            AI.forWorld(worldObj).unregister(aiId);
+        }
         this.aiId = id;
+        AI.forWorld(worldObj).register(id, this);
         markDirty();
         updateBlock(7);
     }

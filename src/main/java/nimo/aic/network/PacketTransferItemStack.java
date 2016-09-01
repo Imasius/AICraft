@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.items.IItemHandler;
-import nimo.aic.AICraft;
+import nimo.aic.ai.AI;
 import nimo.aic.grpc.TransferItemStackRequest;
 import nimo.aic.tiles.AIStorage;
 import nimo.aic.tiles.TileEntityId;
@@ -32,8 +32,8 @@ public class PacketTransferItemStack extends PacketRPC<TransferItemStackRequest>
         private void handle(PacketTransferItemStack message, MessageContext ctx) {
             TransferItemStackRequest request = message.message;
 
-            TileEntityId fromTE = AICraft.proxy.ai.get(request.getFromId());
-            TileEntityId toTE = AICraft.proxy.ai.get(request.getToId());
+            TileEntityId fromTE = AI.server().get(request.getFromId());
+            TileEntityId toTE = AI.server().get(request.getToId());
 
             IItemHandler fromHandler = ((AIStorage) fromTE).getItemHandler();
             IItemHandler toHandler = ((AIStorage) toTE).getItemHandler();

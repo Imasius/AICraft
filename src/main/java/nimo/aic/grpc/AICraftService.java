@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
 import nimo.aic.AICraft;
 import nimo.aic.ModBlocks;
+import nimo.aic.ai.AI;
 import nimo.aic.grpc.util.ConversionUtil;
 import nimo.aic.network.PacketHandler;
 import nimo.aic.network.PacketSetId;
@@ -83,8 +84,8 @@ public class AICraftService extends AICraftGrpc.AICraftImplBase {
             return;
         }
 
-        TileEntityId fromTE = AICraft.proxy.ai.get(request.getFromId());
-        TileEntityId toTE = AICraft.proxy.ai.get(request.getToId());
+        TileEntityId fromTE = AI.client().get(request.getFromId());
+        TileEntityId toTE = AI.client().get(request.getToId());
 
         if (!(fromTE instanceof AIStorage) || !(toTE instanceof AIStorage)) {
             // TODO: Send "no storage blocks" error
