@@ -38,4 +38,8 @@ public abstract class TileEntityId extends TileEntityBase {
         IBlockState state = worldObj.getBlockState(getPos());
         worldObj.notifyBlockUpdate(getPos(), state, state, 3);
     }
+
+    public Id getId() {
+        return aiId;
+    }
 }

@@ -1,6 +1,8 @@
 package nimo.aic.blocks;
 
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -20,11 +22,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nimo.aic.AICraft;
+import nimo.aic.compatibility.IWailaInfoProvider;
 import nimo.aic.tiles.TileEntityController;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
-public class BlockController extends Block implements ITileEntityProvider {
+public class BlockController extends Block implements ITileEntityProvider, IWailaInfoProvider {
 
     public BlockController() {
         super(Material.ROCK);
@@ -56,5 +60,15 @@ public class BlockController extends Block implements ITileEntityProvider {
         System.out.println("Name on " + world + ": " + controllerTE.getName());
 
         return true;
+    }
+
+    @Override
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        TileEntity te = accessor.getTileEntity();
+        if (te instanceof TileEntityController) {
+            TileEntityController controllerTE = (TileEntityController) te;
+            currentTip.add("Name: " + controllerTE.getName());
+        }
+        return currentTip;
     }
 }

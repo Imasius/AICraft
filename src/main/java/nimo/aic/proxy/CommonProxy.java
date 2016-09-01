@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import nimo.aic.AICraft;
 import nimo.aic.ModBlocks;
 import nimo.aic.ai.AI;
+import nimo.aic.compatibility.CompatibilityHandler;
 import nimo.aic.network.PacketHandler;
 
 public class CommonProxy {
@@ -18,6 +19,7 @@ public class CommonProxy {
         ModBlocks.init();
 
         PacketHandler.registerMessages(AICraft.MODID);
+        CompatibilityHandler.registerWaila();
     }
 
     public void init(FMLInitializationEvent event) {

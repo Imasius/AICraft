@@ -1,6 +1,8 @@
 package nimo.aic.blocks;
 
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -20,11 +22,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nimo.aic.AICraft;
+import nimo.aic.compatibility.IWailaInfoProvider;
 import nimo.aic.tiles.TileEntityAIChest;
+import nimo.aic.tiles.TileEntityId;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
-public class BlockAIChest extends Block implements ITileEntityProvider {
+public class BlockAIChest extends Block implements ITileEntityProvider, IWailaInfoProvider {
 
     private static final int GUI_ID = 2;
 
@@ -64,5 +69,18 @@ public class BlockAIChest extends Block implements ITileEntityProvider {
 
         playerIn.openGui(AICraft.instance, GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
+    }
+
+    @Override
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        // TODO: Same as AIChest, also making string out of Id is hard coded
+        TileEntity te = accessor.getTileEntity();
+        if (te instanceof TileEntityId) {
+            TileEntityId idTE = (TileEntityId) te;
+            if (idTE.getId() != null) {
+                currentTip.add("Id: " + idTE.getId().getGroup() + ":" + idTE.getId().getId());
+            }
+        }
+        return currentTip;
     }
 }
