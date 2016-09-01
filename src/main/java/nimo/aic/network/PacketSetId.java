@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import nimo.aic.AICraft;
 import nimo.aic.grpc.Id;
 import nimo.aic.tiles.TileEntityId;
-import nimo.aic.tiles.TileEntityStorage;
 
 
 public class PacketSetId implements IMessage {

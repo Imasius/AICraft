@@ -1,7 +1,6 @@
 package nimo.aic.tiles;
 
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import nimo.aic.AICraft;
 import nimo.aic.grpc.Id;

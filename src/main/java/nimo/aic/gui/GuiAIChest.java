@@ -3,9 +3,7 @@ package nimo.aic.gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import nimo.aic.AICraft;
 import nimo.aic.tiles.container.ContainerAIChest;
-import nimo.aic.tiles.container.ContainerStorage;
 
 
 public class GuiAIChest extends GuiContainer {

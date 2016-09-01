@@ -23,7 +23,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import nimo.aic.AICraft;
 import nimo.aic.compatibility.IWailaInfoProvider;
-import nimo.aic.tiles.TileEntityController;
 import nimo.aic.tiles.TileEntityId;
 import nimo.aic.tiles.TileEntityStorage;
 
