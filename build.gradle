@@ -14,13 +14,11 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.0'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'com.google.protobuf'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 repositories {
@@ -60,6 +58,8 @@ minecraft {
 }
 
 dependencies {
+    libraries project(':AICraftLib')
+
     libraries 'io.grpc:grpc-netty:1.0.0'
     libraries 'io.grpc:grpc-protobuf:1.0.0'
     libraries 'io.grpc:grpc-stub:1.0.0'
@@ -113,24 +113,5 @@ processResources
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
-    }
-}
-
-protobuf {
-    protoc {
-        // The version of protoc must match protobuf-java. If you don't depend on
-        // protobuf-java directly, you will be transitively depending on the
-        // protobuf-java version that grpc depends on.
-        artifact = "com.google.protobuf:protoc:3.0.0"
-    }
-    plugins {
-        grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.0.0'
-        }
-    }
-    generateProtoTasks {
-        all()*.plugins {
-            grpc {}
-        }
     }
 }

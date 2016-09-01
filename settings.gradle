@@ -1,0 +1,2 @@
+include ':AICraftLib'
+project(':AICraftLib').projectDir = new File(settingsDir, '../AICraftLib')
