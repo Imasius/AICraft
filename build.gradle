@@ -87,7 +87,7 @@ shadowJar {
     classifier = null
 
     relocate 'io.netty', 'shadow.io.netty'
-    relocate ('com.google', 'shadow.com.google') {
+    relocate ('com.google.common', 'shadow.com.google.common') {
         exclude 'com.google.common.util.concurrent.ListenableFuture'
     }
 
