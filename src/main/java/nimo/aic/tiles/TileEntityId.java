@@ -35,8 +35,7 @@ public abstract class TileEntityId extends TileEntityBase {
     public void setId(Id id) {
         this.aiId = id;
         markDirty();
-        IBlockState state = worldObj.getBlockState(getPos());
-        worldObj.notifyBlockUpdate(getPos(), state, state, 3);
+        updateBlock(7);
     }
 
     public Id getId() {

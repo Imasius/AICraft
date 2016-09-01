@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import nimo.aic.AICraft;
 
 /**
  * Thanks to Crazypants and HenryLoenwind
@@ -28,21 +29,19 @@ public abstract class TileEntityBase extends TileEntity {
 
     @Override
     public NBTTagCompound getUpdateTag() {
-        NBTTagCompound tag = new NBTTagCompound();
-        writeCustomNBT(tag);
-        return tag;
+        return writeToNBT(new NBTTagCompound());
     }
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tag = new NBTTagCompound();
-        writeCustomNBT(tag);
+        writeToNBT(tag);
         return new SPacketUpdateTileEntity(getPos(), 1, tag);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        readCustomNBT(pkt.getNbtCompound());
+        readFromNBT(pkt.getNbtCompound());
     }
 
     public boolean canPlayerAccess(EntityPlayer player) {
@@ -50,9 +49,13 @@ public abstract class TileEntityBase extends TileEntity {
     }
 
     protected void updateBlock() {
+        updateBlock(3);
+    }
+
+    protected void updateBlock(int flag) {
         if (worldObj != null) {
             IBlockState bs = worldObj.getBlockState(getPos());
-            worldObj.notifyBlockUpdate(pos, bs, bs, 3);
+            worldObj.notifyBlockUpdate(pos, bs, bs, flag);
         }
     }
 

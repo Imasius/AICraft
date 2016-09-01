@@ -24,6 +24,6 @@ public class TileEntityController extends TileEntityBase {
     public void setName(String name) {
         this.name = name;
         markDirty();
-        updateBlock();
+        updateBlock(7);
     }
 }
