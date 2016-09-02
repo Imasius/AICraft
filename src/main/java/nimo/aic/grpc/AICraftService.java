@@ -14,14 +14,16 @@ import nimo.aic.AICraft;
 import nimo.aic.ModBlocks;
 import nimo.aic.ai.AI;
 import nimo.aic.grpc.util.ConversionUtil;
-import nimo.aic.network.PacketHandler;
-import nimo.aic.network.PacketSetId;
-import nimo.aic.network.PacketSetName;
-import nimo.aic.network.PacketTransferItemStack;
+import nimo.aic.network.*;
 import nimo.aic.tiles.AIStorage;
 import nimo.aic.tiles.TileEntityId;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AICraftService extends AICraftGrpc.AICraftImplBase {
+
+    public static final Map<Long, StreamObserver> responseMap = new HashMap<>();
 
     @Override
     public void setName(SetNameRequest request, StreamObserver<Empty> responseObserver) {
@@ -125,5 +127,31 @@ public class AICraftService extends AICraftGrpc.AICraftImplBase {
 
         responseObserver.onNext(Empty.getDefaultInstance());
         responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getItemStackInfo(GetItemStackInfoRequest request, StreamObserver<GetItemStackInfoResponse> responseObserver) {
+        PacketGetItemStackInfo packet = new PacketGetItemStackInfo(request);
+        responseMap.put(packet.getMessageId(), responseObserver);
+        PacketHandler.INSTANCE.sendToServer(packet);
+
+        /*// TODO: Log detailed request to trace
+        AICraft.log.info("Received TransferItemStackRequest: {}", request);
+        if (Minecraft.getMinecraft().theWorld == null) {
+            // TODO: Send "World not loaded" error
+            AICraft.log.info("Unable to do anything with request as no world is loaded.");
+            responseObserver.onNext(GetItemStackInfoResponse.getDefaultInstance());
+            responseObserver.onCompleted();
+            return;
+        }
+
+        TileEntityId te = AI.client().get(request.getId());
+        if (!(te instanceof AIStorage)) {
+            // TODO: Send "no storage blocks" error
+            AICraft.log.info("One of the blocks is not able to store things");
+            responseObserver.onNext(GetItemStackInfoResponse.getDefaultInstance());
+            responseObserver.onCompleted();
+            return;
+        }*/
     }
 }
