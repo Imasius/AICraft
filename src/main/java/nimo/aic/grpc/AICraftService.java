@@ -41,7 +41,7 @@ public class AICraftService extends AICraftGrpc.AICraftImplBase {
         IBlockState blockState = Minecraft.getMinecraft().theWorld.getBlockState(controllerPos);
         Block block = blockState.getBlock();
         if (block == ModBlocks.controller) {
-            PacketHandler.INSTANCE.sendToServer(new PacketSetName(request));
+            PacketHandler.INSTANCE.sendToServer(new PacketRPC(request));
         } else {
             // TODO: Send "no controller at those coordinates" error
         }
@@ -65,7 +65,7 @@ public class AICraftService extends AICraftGrpc.AICraftImplBase {
         BlockPos blockPos = ConversionUtil.blockPosFrom(request.getPosition());
         TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(blockPos);
         if (te instanceof AIStorage) {
-            PacketHandler.INSTANCE.sendToServer(new PacketSetId(request));
+            PacketHandler.INSTANCE.sendToServer(new PacketRPC(request));
         } else {
             // TODO: Send "no controller at those coordinates" error
         }
@@ -123,7 +123,7 @@ public class AICraftService extends AICraftGrpc.AICraftImplBase {
         //    toHandler.insertItem(request.getToSlot(), fromSt, false);
         //});
 
-        PacketHandler.INSTANCE.sendToServer(new PacketTransferItemStack(request));
+        PacketHandler.INSTANCE.sendToServer(new PacketRPC(request));
 
         responseObserver.onNext(Empty.getDefaultInstance());
         responseObserver.onCompleted();
@@ -131,8 +131,8 @@ public class AICraftService extends AICraftGrpc.AICraftImplBase {
 
     @Override
     public void getItemStackInfo(GetItemStackInfoRequest request, StreamObserver<GetItemStackInfoResponse> responseObserver) {
-        PacketGetItemStackInfo packet = new PacketGetItemStackInfo(request);
-        responseMap.put(packet.getMessageId(), responseObserver);
+        PacketRPC packet = new PacketRPC(request);
+        responseMap.put(packet.getSequenceNr(), responseObserver);
         PacketHandler.INSTANCE.sendToServer(packet);
 
         /*// TODO: Log detailed request to trace

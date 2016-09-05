@@ -21,11 +21,7 @@ public class PacketHandler {
     }
 
     public static void registerMessages() {
-        INSTANCE.registerMessage(PacketSetName.Handler.class, PacketSetName.class, nextId(), Side.SERVER);
-        INSTANCE.registerMessage(PacketSetId.Handler.class, PacketSetId.class, nextId(), Side.SERVER);
-        INSTANCE.registerMessage(PacketTransferItemStack.Handler.class, PacketTransferItemStack.class, nextId(), Side.SERVER);
-
-        INSTANCE.registerMessage(PacketGetItemStackInfo.Handler.class, PacketGetItemStackInfo.class, nextId(), Side.SERVER);
-        INSTANCE.registerMessage(PacketGetItemStackInfoResponse.Handler.class, PacketGetItemStackInfoResponse.class, nextId(), Side.CLIENT);
+        INSTANCE.registerMessage(PacketRPC.RequestPacketHandler.class, PacketRPC.class, nextId(), Side.SERVER);
+        INSTANCE.registerMessage(PacketRPC.ResponsePacketHandler.class, PacketRPC.class, nextId(), Side.CLIENT);
     }
 }
