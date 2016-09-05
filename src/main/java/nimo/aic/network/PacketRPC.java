@@ -6,9 +6,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import nimo.aic.AICraft;
-import nimo.aic.grpc.SetIdRequest;
-import nimo.aic.grpc.SetNameRequest;
-import nimo.aic.grpc.TransferItemStackRequest;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -25,6 +22,8 @@ public class PacketRPC implements IMessage {
 
     private static Map<MessageType, Class<?>> messageClassMap = new HashMap<>();
     private static Map<Class<?>, MessageType> classMessageMap = new HashMap<>();
+
+    private static Map<MessageType, Method> handlerCache = new HashMap<>();
 
     private static final String msgPackage = "nimo.aic.grpc.";
 
@@ -48,6 +47,19 @@ public class PacketRPC implements IMessage {
         TransferItemStackRequest,
         GetItemStackInfoRequest,
         GetItemStackInfoResponse
+    }
+
+    private enum PacketType {
+        Request(7, RequestHandler.class),
+        Response(8, ResponseHandler.class);
+
+        public final int offset;
+        public final Class<?> handlerClass;
+
+        PacketType(int offset, Class<?> handlerClass) {
+            this.offset = offset;
+            this.handlerClass = handlerClass;
+        }
     }
 
     protected MessageType messageType;
@@ -95,21 +107,12 @@ public class PacketRPC implements IMessage {
     public static class RequestPacketHandler implements IMessageHandler<PacketRPC, IMessage> {
         @Override
         public IMessage onMessage(PacketRPC packet, MessageContext ctx) {
-            switch (packet.messageType) {
-                case SetNameRequest:
-                    RequestHandler.instance.setName((SetNameRequest) packet.message, ctx);
-                    break;
-                case SetIdRequest:
-                    RequestHandler.instance.setId((SetIdRequest) packet.message, ctx);
-                    break;
-                case TransferItemStackRequest:
-                    RequestHandler.instance.transferItemStack((TransferItemStackRequest) packet.message, ctx);
-                    break;
-                case GetItemStackInfoRequest:
-                    RequestHandler.instance.getItemStackInfo(packet, ctx);
-                    break;
-                default:
-                    AICraft.log.warn("Message of type {} not handled.", packet.messageType);
+            try {
+                Method handler = getHandler(packet.messageType, PacketType.Request);
+                handler.invoke(RequestHandler.instance, packet, ctx);
+            } catch (Exception e) {
+                AICraft.log.error("Unable to call handler method for MessageType {}", packet.messageType);
+                AICraft.log.catching(e);
             }
             return null;
         }
@@ -118,14 +121,32 @@ public class PacketRPC implements IMessage {
     public static class ResponsePacketHandler implements IMessageHandler<PacketRPC, IMessage> {
         @Override
         public IMessage onMessage(PacketRPC packet, MessageContext ctx) {
-            switch (packet.messageType) {
-                case GetItemStackInfoResponse:
-                    ResponseHandler.instance.getItemStackInfo(packet, ctx);
-                    break;
-                default:
-                    AICraft.log.warn("Message of type {} not handled.", packet.messageType);
+            try {
+                Method handler = getHandler(packet.messageType, PacketType.Response);
+                handler.invoke(ResponseHandler.instance, packet, ctx);
+            } catch (Exception e) {
+                AICraft.log.error("Unable to call handler method for MessageType {}", packet.messageType);
+                AICraft.log.catching(e);
             }
             return null;
         }
+    }
+
+    private static Method getHandler(MessageType messageType, PacketType packetType) throws NoSuchMethodException {
+        Method handler = handlerCache.get(messageType);
+        if (handler == null) {
+            String methodName = methodNameOf(messageType, packetType.offset);
+            handler = packetType.handlerClass.getMethod(methodName, PacketRPC.class, MessageContext.class);
+            handlerCache.put(messageType, handler);
+        }
+        return handler;
+    }
+
+    private static String methodNameOf(MessageType messageType, int offset) {
+        String messageTypeString = messageType.toString();
+        String prefixLetter = messageTypeString.substring(0, 1).toLowerCase();
+
+        String methodNameString = prefixLetter + messageTypeString.substring(1, messageTypeString.length() - offset);
+        return methodNameString;
     }
 }

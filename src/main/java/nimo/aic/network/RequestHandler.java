@@ -20,7 +20,8 @@ public class RequestHandler {
 
     private RequestHandler() {}
 
-    public void setName(SetNameRequest request, MessageContext ctx) {
+    public void setName(PacketRPC packet, MessageContext ctx) {
+        SetNameRequest request = (SetNameRequest) packet.message;
         FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> {
             World world = ctx.getServerHandler().playerEntity.worldObj;
             BlockPos pos = ConversionUtil.blockPosFrom(request.getPosition());
@@ -30,7 +31,8 @@ public class RequestHandler {
         });
     }
 
-    public void setId(SetIdRequest request, MessageContext ctx) {
+    public void setId(PacketRPC packet, MessageContext ctx) {
+        SetIdRequest request = (SetIdRequest) packet.message;
         FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> {
             World world = ctx.getServerHandler().playerEntity.worldObj;
             BlockPos pos = ConversionUtil.blockPosFrom(request.getPosition());
@@ -39,7 +41,8 @@ public class RequestHandler {
         });
     }
 
-    public void transferItemStack(TransferItemStackRequest request, MessageContext ctx) {
+    public void transferItemStack(PacketRPC packet, MessageContext ctx) {
+        TransferItemStackRequest request = (TransferItemStackRequest) packet.message;
         FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> {
             TileEntityId fromTE = AI.server().get(request.getFromId());
             TileEntityId toTE = AI.server().get(request.getToId());
